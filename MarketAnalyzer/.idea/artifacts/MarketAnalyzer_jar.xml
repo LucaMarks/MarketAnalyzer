@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MarketAnalyzer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MarketAnalyzer_jar</output-path>
+    <root id="archive" name="MarketAnalyzer.jar">
+      <element id="module-output" name="MarketAnalyzer" />
+    </root>
+  </artifact>
+</component>
