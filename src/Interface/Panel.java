@@ -7,11 +7,12 @@ import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Panel extends JPanel{
+public class Panel extends JFrame{
+
+    public static int scale = 1;
 
     int width = 3000;
     int height = 800;
-    BufferedImage screen;
 
     final int tileSize = 21;
     final int lineWidth = 2;
@@ -19,16 +20,23 @@ public class Panel extends JPanel{
     final int chartStartX = tileSize * 2;
     final int chartStartY = tileSize * (axisSize / 2) + 1;
 
+    int legendX = tileSize * 40;
+    int legendY = tileSize * 25;
+
     JFrame window;
     JPanel mainPanel;
-    final Color[] colours = {Color.CYAN, Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.MAGENTA, Color.PINK, Color.WHITE};
+    final Color[] colours = {Color.CYAN, Color.GREEN, Color.BLUE, Color.RED, Color.YELLOW, Color.MAGENTA, Color.PINK, Color.WHITE};
 
     public Panel(Loader[] datas){
         setup();
         makePanels();
 
-        for(int i = 0; i < datas.length; i++){drawChart(datas[i].chartIndexes, colours[i]);}
-
+        for(int i = 0; i < datas.length; i++){
+//            System.out.println(datas[i]);
+            drawChart(datas[i].chartIndexes, colours[i]);
+            drawLegend(datas[i].name, colours[i]);
+        }
+//        System.out.println(scale);
         window.setVisible(true);
     }
 
@@ -72,16 +80,11 @@ public class Panel extends JPanel{
         window.setVisible(true);
     }
 
-    public void drawSideLines(){}
-
-    public void loopData(){
-
-    }
     public void drawChart(float[] data, Color colour){
 
         //Given data for a single stock, for a single interval, chart the difference
         float prevY = chartStartY;
-        int startingX = 2;
+        int startingX = 1;
         for(int i = 0; i < data.length; i++){
             JPanel panel = new JPanel();
             panel.setBackground(colour);
@@ -90,7 +93,6 @@ public class Panel extends JPanel{
             if(data[i] > 0){
                                       /*Currently data is multiplied by 10 to take into account
                                         decimals, and also to help scale the data*/
-
 //                val = (int) (data[i] * 10);
                 val = (int) (data[i] * tileSize);
                 ycord = (int) prevY - val;
@@ -101,7 +103,7 @@ public class Panel extends JPanel{
                 val = (int) (data[i] * -1 * tileSize);
             }
 
-            panel.setBounds(chartStartX + (startingX * tileSize), ycord, lineWidth * 4, val);
+            panel.setBounds(chartStartX + (startingX * (tileSize / scale)), ycord, lineWidth * 4, val);
 
 //            drawIndexes(ycord,  startingX * tileSize, (int) (data[i] * 10));
 
@@ -119,6 +121,7 @@ public class Panel extends JPanel{
     }
 
     public void drawIndexes(int ycord, int xcord, float val){
+
         JPanel dash = new JPanel();
         dash.setBackground(Color.BLACK);
         dash.setBounds(chartStartX, ycord, 5, lineWidth);
@@ -135,4 +138,40 @@ public class Panel extends JPanel{
         mainPanel.repaint();
         mainPanel.revalidate();
     }
+
+    public void drawLegend(String name, Color colour){
+        JPanel panel = new JPanel();
+
+        panel.setBackground(colour);
+        panel.setBounds(legendX, legendY, tileSize, tileSize);
+
+        JLabel label = new JLabel();
+        label.setText(name);
+        label.setBounds(legendX + tileSize, legendY, tileSize * 2, tileSize);
+
+        legendY += tileSize;
+
+        if(legendY + tileSize > height - tileSize){legendX += tileSize * 2;}
+
+
+        mainPanel.add(panel);
+        mainPanel.add(label);
+
+        mainPanel.repaint();
+        mainPanel.revalidate();
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

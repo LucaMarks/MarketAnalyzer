@@ -1,8 +1,10 @@
 import yfinance as yf
 
-namesOfStock = ["MSFT", "AAPL", "NVDA"]
-interval = "5m"
-period = "1d"
+# namesOfStock = ["MSFT", "AAPL", "NVDA"]
+namesOfStock = ["KO", "PEP"]
+# 1d, 2y
+interval = "1h"
+period = "1y"
 
 fileNames = []
 
@@ -16,6 +18,9 @@ for i in range(len(namesOfStock)):
     fileName = f"{namesOfStock[i]}_data.csv"
     df.to_csv(fileName)
     fileNames.append(fileName)
+    #add the interval & period as well
+intervalPeriod = interval + " " + period
+fileNames.append(intervalPeriod)
 
 import subprocess
 

@@ -1,5 +1,7 @@
 package Unloader;
 
+import Interface.Panel;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,9 +14,11 @@ public class Loader {
     //Converted from the previous arrayList
     public float[] chartIndexes;
 
+    public String name;
     public Loader(String name){
-       receiveData(name);
-       process();
+        setName(name);
+        receiveData(name);
+        process();
     }
 
 
@@ -29,8 +33,6 @@ public class Loader {
         Subtract the close from the open to determine the change
      */
     public void receiveData(String fileName){
-        String[] intervals = new String[2];
-        int currIndex = 0;
         try{
             Scanner sc = new Scanner(new File("./" + fileName));
             sc.nextLine();
@@ -41,14 +43,22 @@ public class Loader {
                     String line = sc.nextLine();
                     String[] list = line.split(",");
 //                    System.out.println(Arrays.toString(list));
-                    String[] interval = list[0].split(":");
-                    String[] date = interval[0].split(" ");
-                    if(currIndex < 1) {intervals[currIndex] = interval[2];currIndex++;}
+                    String[] date = list[0].split(" ");
                     lines.add(new Line(date[0], Float.parseFloat(list[4]), Float.parseFloat(list[1])));
 
                 }
-            }catch(Exception e){}
+            }catch(Exception e){System.out.println(e.getMessage());}
         }catch(Exception e){e.printStackTrace();}
+
+        /*
+            There is one issue with this
+                Any value for scale > 21 will cause the chart not to move forward
+                This is because the tilesize is 21 so (int) 21 / x, x > 21 = 0 -> therefore no movement for the x-direction
+            Two fixes
+                1. Make tileSize smaller when scale is > 21
+                2. Do chartStartX + 1 when scale > 21
+         */
+        Panel.scale = (int) (lines.size() / 85) + 1;
 
 //        for(int i = 0; i < lines.size(); i++){System.out.println(lines.get(i).toString());}
     }
@@ -63,5 +73,7 @@ public class Loader {
         }
     }
 
-    public void export(){}
+    public void setName(String fileName){
+        name = fileName.split("_")[0];
+    }
 }
