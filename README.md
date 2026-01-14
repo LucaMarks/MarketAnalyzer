@@ -1,2 +1,5 @@
 # MarketAnalyzer
 
+Market analysis using live trading data.
+
+This projects uses the Yahoo Finance api to gather live data visually present, and analyze the data using the swing library in Java. The main analysis of this proejct was to capture the relation between stock prices between companies in the same industry. The theory is that companies in the same industry follow similar patterns during their active life cycles. This program is designed to analyze/recognise these patterns, and be able to detect deviation from any one company within an industry. Currently working on implemening SpringBoot to set up a website for this project to display findings.
