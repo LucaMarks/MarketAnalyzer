@@ -14,8 +14,11 @@ public class Panel extends JFrame{
     int width = 3000;
     int height = 800;
 
-    final int tileSize = 21;
-    final int lineWidth = 2;
+    public static final int tileSize = 21;
+    public static final int lineWidth = 2;
+    public static int overScaleFix = 0;
+    public static int barWidthFactor = 4;
+    static int barWidth = lineWidth * barWidthFactor;
     int axisSize = 35;
     final int chartStartX = tileSize * 2;
     final int chartStartY = tileSize * (axisSize / 2) + 1;
@@ -36,7 +39,7 @@ public class Panel extends JFrame{
             drawChart(datas[i].chartIndexes, colours[i]);
             drawLegend(datas[i].name, colours[i]);
         }
-//        System.out.println(scale);
+        System.out.println(scale);
         window.setVisible(true);
     }
 
@@ -102,8 +105,8 @@ public class Panel extends JFrame{
 //                val = (int) (data[i] * -10);//*-10 to get a positive # (negative #'s don't work)
                 val = (int) (data[i] * -1 * tileSize);
             }
-
-            panel.setBounds(chartStartX + (startingX * (tileSize / scale)), ycord, lineWidth * 4, val);
+//                                                                             this is 0
+            panel.setBounds(chartStartX + (startingX * (tileSize / scale) - overScaleFix), ycord, barWidth, val);
 
 //            drawIndexes(ycord,  startingX * tileSize, (int) (data[i] * 10));
 

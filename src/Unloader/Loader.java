@@ -55,11 +55,19 @@ public class Loader {
                 Any value for scale > 21 will cause the chart not to move forward
                 This is because the tilesize is 21 so (int) 21 / x, x > 21 = 0 -> therefore no movement for the x-direction
             Two fixes
-                1. Make tileSize smaller when scale is > 21
+                1. Make bar smaller when scale is > 21
+                    -> The issue is bar width is centered:
+                    -> Bar width is independent of x coord, would need to change that if we are going with this solution
                 2. Do chartStartX + 1 when scale > 21
          */
         Panel.scale = (int) (lines.size() / 85) + 1;
-
+        //for now this doesn't change
+        int scaleCounter = Panel.scale;
+        if(Panel.scale > Panel.tileSize){
+            Panel.scale = Panel.tileSize;//should be 21
+//            Panel.overScaleFix = Panel.lineWidth;
+//            Panel.barWidthFactor--;
+        }
 //        for(int i = 0; i < lines.size(); i++){System.out.println(lines.get(i).toString());}
     }
 
